@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <?php echo app('Illuminate\Foundation\Vite')('resources/css/app.css'); ?>
+    @vite('resources/css/app.css')
 </head>
 
 <body>
@@ -51,4 +51,3 @@
 </body>
 
 </html>
-<?php /**PATH D:\Work Life\Internal\Loops\loop-web-membership\resources\views/welcome.blade.php ENDPATH**/ ?>
