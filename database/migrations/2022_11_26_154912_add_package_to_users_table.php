@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Package;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -14,12 +15,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('package_id')
+            $table->enum('package', Package::pluck('prefix')->toArray())
                 ->after('id')
-                ->nullable()
-                ->constrained('packages')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->nullable();
         });
     }
 
@@ -31,8 +29,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['package_id']);
-            $table->dropColumn(['package_id']);
+            $table->dropColumn(['package']);
         });
     }
 };
