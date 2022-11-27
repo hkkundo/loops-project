@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'package',
+        'role_id',
+        'package_start',
+        'package_expired',
     ];
 
     /**
