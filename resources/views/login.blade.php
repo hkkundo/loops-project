@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    @vite('resources/css/app.css')
-</head>
-
-<body>
+@extends('master-layout')
+@section('content')
     <section class="h-screen">
         <div class="px-6 h-full text-gray-800">
             <div class="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
                 <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+                    @if ($message = Session::get('success'))
+                    <div class="bg-green-100 rounded-lg py-5 px-6 mb-4 text-base text-green-700 mb-3" role="alert">
+                        {{ $message }}
+                    </div>
+                    @endif
+                    @if ($message = Session::get('error'))
+                    <div class="bg-red-100 rounded-lg py-5 px-6 mb-4 text-base text-red-700 mb-3" role="alert">
+                        {{ $message }}
+                    </div>
+                    @endif
                     <form>
                         <!-- Email input -->
                         <div class="mb-6">
@@ -39,7 +36,7 @@
                             </button>
                             <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                                 Don't have an account?
-                                <a href="#!"
+                                <a href="{{ route('register') }}"
                                     class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">Register</a>
                             </p>
                         </div>
@@ -48,6 +45,4 @@
             </div>
         </div>
     </section>
-</body>
-
-</html>
+@endsection
