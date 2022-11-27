@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')
-                ->after('package')
+            $table->dateTime('package_start', $precision = 0)
                 ->nullable()
-                ->constrained('roles')
-                ->onUpdate('cascade')
-                ->onDelete('set null');
+                ->after('remember_token');
+            $table->dateTime('package_expired', $precision = 0)
+                ->nullable()
+                ->after('package_start');
         });
     }
 
@@ -31,8 +31,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn(['role_id']);
+            $table->dropColumn(['package_start', 'package_expired']);
         });
     }
 };
