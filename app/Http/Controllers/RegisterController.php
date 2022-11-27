@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,16 +50,23 @@ class RegisterController extends Controller
 
         if ($request->input('password') === $request->input('confirmation-password')) {
             $package = Package::where('prefix', $request->input('package'))->first();
-            $role = Role::where('name', 'user')->first();
+            $start_date = Carbon::now();
+            $expired_date = Carbon::now()->addDays($package->period);
+            $role = Role::where('prefix', 'user')->first();
 
             $attrs = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
-                'package_id' => $package->id,
+                'package' => $package->prefix,
                 'role_id' => $role->id,
+                'package_start' => $start_date,
+                'package_expired' => $expired_date,
             ];
+
+            DB::beginTransaction();
             User::create($attrs);
+            DB::commit();
 
             return redirect('login')->with(['success' => 'User created']);
         } else {
