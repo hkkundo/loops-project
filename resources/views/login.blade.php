@@ -9,28 +9,34 @@
                         {{ $message }}
                     </div>
                     @endif
-                    @if ($message = Session::get('error'))
+                    @error('email')
                     <div class="bg-red-100 rounded-lg py-5 px-6 mb-4 text-base text-red-700 mb-3" role="alert">
                         {{ $message }}
                     </div>
-                    @endif
-                    <form>
+                    @enderror
+                    @error('password')
+                    <div class="bg-red-100 rounded-lg py-5 px-6 mb-4 text-base text-red-700 mb-3" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                    <form action="{{ route('login') }}" method="POST">
+                        @csrf
                         <!-- Email input -->
                         <div class="mb-6">
-                            <input type="email"
+                            <input type="email" name="email" value="{{ old('email') }}"
                                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 id="exampleFormControlInput2" placeholder="Email address" />
                         </div>
 
                         <!-- Password input -->
                         <div class="mb-6">
-                            <input type="password"
+                            <input type="password" name="password"
                                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 id="exampleFormControlInput2" placeholder="Password" />
                         </div>
 
                         <div class="text-center lg:text-left">
-                            <button type="button"
+                            <button type="submit"
                                 class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                 Login
                             </button>

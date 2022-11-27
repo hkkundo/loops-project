@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -16,13 +17,27 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', $request->input('email'))->first();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required',
+        ]);
 
-        if (Auth::attempt([
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
-        ])) {
-            # // to user page
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $user = User::where('email', $request->input('email'))->first();
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('dashboard');
+        } else {
+            $validator->getMessageBag()->add('password', 'Password invalid!');
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($validator);
         }
     }
 }
